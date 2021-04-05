@@ -1,0 +1,65 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load comment_tags %}
+{% block main %}
+    <!-- about -->
+    <div class="about">
+        <div class="container_width">
+            <div class="row flex-container">
+                <div class="col-md-5">
+                    <div class="about_img text_align_center">
+                        <figure><img src="{{ article.thumbnail.url }}" alt="#"/></figure>
+                    </div>
+                </div>
+                {% if object.is_special %}
+                    {% if user.is_authenticated and user.is_special_user or user == object.auther or user.is_superuser %}
+                        <div class="col-md-12">
+                            <div class="titlepage text_align_left text-justify">
+                                <h2>{{ article.title }} </h2>
+                                <p>{{ article.description |safe }}</p>
+                                <p class="post-meta">نوشته شده توسط <a href="#"><
+                                    <ستایش>>
+                                </a> {{ article.jpublish }} </p>
+{#                                <a class="read_more" href="about.html">ادامه</a>#}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-md-6">
+                            <div class="titlepage text_align_left text-justify">
+                                <p>{{ article.description |striptags| truncatewords:30 }}</p>
+                            </div>
+                        </div>
+
+                        <p>
+                            این مقاله ویژه است و برای مشاهده آن باید
+                            <a href="#">"اشتراک ویژه"</a>
+                            تهیه کنید.
+                        </p>
+
+
+                    {% endif %}
+
+                {% else %}
+                    <div class="col-md-12">
+                        <div class="titlepage text_align_left text-justify">
+                            <h2>{{ article.title }} </h2>
+                            <p>{{ article.description |safe }}</p>
+                            <p class="post-meta">نوشته شده توسط <a href="#">
+                                "ستایش"
+                            </a> {{ article.jpublish }} </p>
+                        </div>
+                    </div>
+
+                {% endif %}
+                <!-- comments -->
+                <div  style=" direction: rtl; text-align: right;">
+                    {% render_comments object request %}
+                    {% include_static_jquery %}
+                    {% include_bootstrap %}
+                </div>
+                <!-- end comments -->
+            </div>
+        </div>
+    </div>
+    <!-- end about -->
+{% endblock %}

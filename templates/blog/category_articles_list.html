@@ -1,0 +1,10 @@
+{% extends 'blog/home.html' %}
+
+{% block header %}
+    <h2>دسته بندی : {{ category.title }}</h2>
+    {% if not category.articles.all %}
+        <div class="alert alert-info text-center mt-3 " role="alert">
+            مقاله ای برای نمایش وجود ندارد
+        </div>
+    {% endif %}
+{% endblock %}

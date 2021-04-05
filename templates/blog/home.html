@@ -1,0 +1,158 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block main %}
+    <!-- about -->
+    <div class="about">
+        <div class="container_width">
+            <div class="row d_flex">
+                <div class="col-md-7">
+                    <div class="titlepage text_align_right">
+                        <h2>درباره ویروس کرونا </h2>
+                        <p>
+                            ویروس کرونا در بسیاری از کشورهای جهان شیوع پیدا کرده و جان بسیاری را گرفته است. دبیرکل
+                            سازمان بهداشت جهانی اعلام کرده که "کُووید ۱۹" (بیماری ای که ویروس کرونا عامل آن است) به
+                            مرحله همه‌گیری جهانی رسیده است.
+                        </p>
+                        <a class="read_more" href="about.html">ادامه</a>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="about_img text_align_center">
+                        <figure><img src="{% static 'blog/images/about.png' %}" alt="#"/></figure>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- end about -->
+    <!-- coronata -->
+    <div class="coronata">
+        <div class="container">
+            <div class="row d_flex grid">
+                <div class="col-md-7">
+                    <div class="coronata_img text_align_center">
+                        <figure><img src="{% static 'blog/images/corona.png' %}" alt="#"/></figure>
+                    </div>
+                </div>
+                <div class="col-md-5 oder1">
+                    <div class="titlepage text_align_right">
+                        <h2>علائم ویروس کرونا چیست؟</h2>
+                        <p>
+                            عالئم بیماری ممکن است از خفیف تا شدید متغیر باشد و 2-14 روز پس از قرارگیری شما در معرض ویروس
+                            عامل
+                            بیماری کووید-19 ظاهر شود.
+                        </p>
+                        <a class="read_more" href="{% static 'blog/coronata.html' %}">ادامه</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end coronata -->
+    <!-- cases -->
+    <div class="cases">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="titlepage text_align_center ">
+                        {% block header %}{% endblock %}
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row d_flex" style="align-items: normal">
+                {% for article in object_list %}
+                    <div class=" col-md-4 ">
+                        <div class="latest text_align_center">
+                            <figure><img src="{{ article.thumbnail.url }}" alt="#"/></figure>
+                            <a class="read_more" href="{% url 'blog:detail' article.slug %}">ادامه</a>
+                            <div class="nostrud">
+
+                                <h3>{{ article.title }}</h3>
+                                <p>{{ article.description |striptags| truncatewords:30 }}</p>
+                                {% if article.is_special %}
+                                    <span class="badge badge-danger">مقاله ویژه</span>
+                                {% endif %}
+                                <br>
+                                <small>
+                                    <a href="{% url 'blog:author' article.author %}">نویسنده
+                                        :
+                                        {% if article.author.get_full_name %}
+                                            {{ article.author.get_full_name }}
+                                        {% else %}
+                                            {{ article.author.username }}
+                                        {% endif %}</a>
+                                    <br>
+                                    {% for category in article.category.active %}
+                                        <a href={% url 'blog:category' category.slug %}>#{{ category.title }}</a>
+                                    {% endfor %}
+
+                                </small>
+                            </div>
+                        </div>
+
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+    <!-- end cases -->
+    <!-- pagination -->
+    {% if page_obj.has_other_pages %}
+        <div class="demo mb-3">
+            <nav class="pagination-outer" aria-label="Page navigation">
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a href="?page=1" class="page-link" aria-label="Previous">
+                                <span aria-hidden="true">««</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <a href="#" class="page-link " aria-label="Previous">
+                                <span aria-hidden="true">«</span>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% for i in page_obj.paginator.page_range %}
+                        {% if page_obj.number|add:"-2" == i %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                        {% elif page_obj.number|add:"-1" == i %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                        {% elif page_obj.number == i %}
+                            <li class="page-item active"><a class="page-link" href="#">{{ i }}</a></li>
+                        {% elif page_obj.number|add:"1" == i %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                        {% elif page_obj.number|add:"2" == i %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a href="?page={{ page_obj.paginator.num_pages }}" class="page-link" aria-label="Next">
+                                <span aria-hidden="true">»»</span>
+                            </a>
+                        </li>
+                    {% else %}
+
+                        <li class="page-item disabled">
+                            <a href="#" class="page-link" aria-label="Next">
+                                <span aria-hidden="true">»</span>
+                            </a>
+                        </li>
+
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    {% endif %}
+    <!-- end pagination -->
+
+{% endblock %}

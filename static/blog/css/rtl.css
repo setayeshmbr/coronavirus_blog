@@ -1,0 +1,235 @@
+@font-face {
+    font-family: Sahel;
+    src: url('../fonts/sahel/Sahel.eot');
+    src: url('../fonts/sahel/Sahel.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/sahel/Sahel.woff2') format('woff2'),
+    url('../fonts/sahel/Sahel.woff') format('woff'),
+    url('../fonts/sahel/Sahel.ttf') format('truetype');
+    font-weight: normal;
+}
+
+body {
+    direction: rtl;
+    text-align: right;
+    font-family: "Sahel";
+    font-size: 14px;
+}
+
+.site-navbar ul li:first-child {
+    margin-right: 70px;
+}
+
+.site-navbar ul li:last-child {
+    padding-right: 45px !important;
+}
+
+.site-navbar ul li {
+    padding-right: 45px !important;
+    padding-left: 45px !important;
+}
+
+.latest {
+    height: 700px
+}
+
+.nostrud p {
+    padding: 5px 0 40px 0 !important;
+}
+
+.nostrud::before {
+    margin: -50px auto;
+}
+
+.photog {
+    width: 420px;
+}
+
+.corona-title {
+    float: left;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.about_img {
+    margin-bottom: 50px;
+}
+
+.pagination {
+    direction: ltr;
+}
+
+
+/* pagination*/
+.pagination-outer {
+    text-align: center;
+}
+
+.pagination {
+    font-family: 'Merriweather', serif;
+    display: inline-flex;
+}
+
+.pagination li a.page-link {
+    color: #333;
+    background: #e7e7e7;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 36px;
+    height: 40px;
+    width: 40px;
+    padding: 0;
+    margin: 0 5px;
+    border: none;
+    border-radius: 50%;
+    display: block;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    transition: all 0.5s ease 0.2s;
+}
+
+.pagination li a.page-link:hover,
+.pagination li a.page-link:focus,
+.pagination li.active a.page-link {
+    color: #fff;
+    background: #ff0000;
+    box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.3);
+}
+
+.pagination li:first-child a.page-link,
+.pagination li:last-child a.page-link {
+    line-height: 38px;
+    transition: all 0.5s ease 0s;
+}
+
+.pagination li a.page-link:before {
+    content: '';
+    background-color: #ff0000;
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    position: absolute;
+    left: 50%;
+    top: -15px;
+    z-index: -1;
+    transition: all 0.5s ease 0s;
+}
+
+.pagination li.active a.page-link:before,
+.pagination li a.page-link:hover:before {
+    opacity: 0;
+    top: 50%;
+}
+
+.pagination li:first-child a.page-link:before,
+.pagination li:last-child a.page-link:before {
+    display: none;
+}
+
+@media only screen and (max-width: 480px) {
+    .pagination {
+        font-size: 0;
+        display: block;
+    }
+
+    .pagination li {
+        display: inline-block;
+        margin: 0 0 10px;
+    }
+}
+
+.page-item:first-child .page-link {
+    border-top-left-radius: 1.25rem;
+    border-bottom-left-radius: 1.25rem;
+}
+
+.page-item:last-child .page-link {
+    border-top-right-radius: 1.25rem;
+    border-bottom-right-radius: 1.25rem;
+}
+
+
+/* navbar */
+#nav {
+    list-style: none inside;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+#nav li {
+    display: block;
+    position: relative;
+    float: left;
+    /* menu background color */
+}
+
+#nav li a {
+    display: block;
+    padding: 0;
+    text-decoration: none;
+    /*width: 200px;*/
+    /*!* this is the width of the menu items *!*/
+    line-height: 35px;
+    /* this is the hieght of the menu items */
+    color: #ffffff;
+    /* list item font color */
+}
+
+#nav li li a {
+    font-size: 80%;
+}
+
+/* smaller font size for sub menu items */
+
+#nav li:hover {
+    background: #05254d;
+}
+
+/* highlights current hovered list item and the parent list items when hovering over sub menues */
+
+#nav ul {
+    position: absolute;
+    padding: 0;
+    left: 0;
+    display: none;
+    /* hides sublists */
+    z-index: 99999999;
+}
+
+#nav li:hover ul ul {
+    display: none;
+}
+
+/* hides sub-sublists */
+
+#nav li:hover ul {
+    display: block;
+}
+
+/* shows sublist on hover */
+
+#nav li li:hover ul {
+    display: block;
+    /* shows sub-sublist on hover */
+    margin-left: 105px;
+    /* this should be the same width as the parent list item */
+    margin-top: -35px;
+    /* aligns top of sub menu with top of list item */
+}
+
+.header-area .left{
+    width: 100px !important;
+}
+
+.header-area .right {
+    width: 100px !important;
+}
+.header-area a{
+    color: white;
+}

@@ -1,0 +1,10 @@
+{% extends 'blog/home.html' %}
+
+{% block header %}
+    <h2>نویسنده : {{ author.get_full_name }}</h2>
+    {% if not author.articles.all %}
+        <div class="alert alert-info text-center mt-3 " role="alert">
+            مقاله ای برای نمایش وجود ندارد
+        </div>
+    {% endif %}
+{% endblock %}
