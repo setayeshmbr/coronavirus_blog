@@ -17,10 +17,15 @@
                             <div class="titlepage text_align_left text-justify">
                                 <h2>{{ article.title }} </h2>
                                 <p>{{ article.description |safe }}</p>
-                                <p class="post-meta">نوشته شده توسط <a href="#"><
-                                    <ستایش>>
+                                <p class="post-meta">نوشته شده توسط <a
+                                        href="{% url 'blog:author' article.author.username %}">
+                                    {% if article.author.get_full_name %}
+                                        {{ article.author.get_full_name }}
+                                    {% else %}
+                                        {{ article.author.username }}
+                                    {% endif %}
                                 </a> {{ article.jpublish }} </p>
-{#                                <a class="read_more" href="about.html">ادامه</a>#}
+                                {#                                <a class="read_more" href="about.html">ادامه</a>#}
                             </div>
                         </div>
                     {% else %}
@@ -44,15 +49,20 @@
                         <div class="titlepage text_align_left text-justify">
                             <h2>{{ article.title }} </h2>
                             <p>{{ article.description |safe }}</p>
-                            <p class="post-meta">نوشته شده توسط <a href="#">
-                                "ستایش"
+                            <p class="post-meta">نوشته شده توسط <a
+                                    href="{% url 'blog:author' article.author.username %}">
+                                {% if article.author.get_full_name %}
+                                    {{ article.author.get_full_name }}
+                                {% else %}
+                                    {{ article.author.username }}
+                                {% endif %}
                             </a> {{ article.jpublish }} </p>
                         </div>
                     </div>
 
                 {% endif %}
                 <!-- comments -->
-                <div  style=" direction: rtl; text-align: right;">
+                <div style=" direction: rtl; text-align: right;">
                     {% render_comments object request %}
                     {% include_static_jquery %}
                     {% include_bootstrap %}

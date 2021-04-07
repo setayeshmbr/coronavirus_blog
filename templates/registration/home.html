@@ -40,7 +40,13 @@
                                     <td>{{ article.slug }}</td>
                                     <td><img src="{{ article.thumbnail.url }}" alt="image" width="120"></td>
                                     <td>{{ article.category_to_str }}</td>
-                                    <td>{{ article.author.get_full_name }}</td>
+                                    <td>
+                                        {% if article.author.get_full_name %}
+                                            {{ article.author.get_full_name }}
+                                        {% else %}
+                                            {{ article.author.username }}
+                                        {% endif %}
+                                    </td>
                                     <td>{{ article.description|striptags|truncatewords:30 }}</td>
                                     <td>{{ article.publish }}</td>
                                     <td>{% if article.is_special %}
