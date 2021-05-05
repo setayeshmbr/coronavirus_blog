@@ -56,13 +56,14 @@
                                 {% else %}
                                     {{ article.author.username }}
                                 {% endif %}
+                                <br>
                             </a> {{ article.jpublish }} </p>
                         </div>
                     </div>
 
                 {% endif %}
                 <!-- comments -->
-                <div style=" direction: rtl; text-align: right;">
+                <div style=" direction: rtl; text-align: right; margin-right: 0; margin-left: auto;">
                     {% render_comments object request %}
                     {% include_static_jquery %}
                     {% include_bootstrap %}
