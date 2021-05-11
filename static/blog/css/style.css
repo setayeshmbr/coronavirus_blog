@@ -641,6 +641,7 @@ button {
 }
 
 .about .titlepage h2::before {
+    display: none;
     position: absolute;
     content: "";
     bottom: 0px;

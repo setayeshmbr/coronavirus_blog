@@ -11,17 +11,17 @@ from comment.models import Comment
 
 
 class Category(models.Model):
-
-    parent = models.ForeignKey('self', default=None, null=True, blank=True, on_delete=models.SET_NULL, related_name= 'children', verbose_name='زیر مجموعه')
-    title = models.CharField(max_length=200 ,verbose_name='عنوان دسته بندی')
-    slug = models.SlugField(max_length=100, unique=True,verbose_name='آدرس دسته بندی')
-    status = models.BooleanField(default= True , verbose_name='آیا نمایش داده شود؟')
+    parent = models.ForeignKey('self', default=None, null=True, blank=True, on_delete=models.SET_NULL,
+                               related_name='children', verbose_name='زیر مجموعه')
+    title = models.CharField(max_length=200, verbose_name='عنوان دسته بندی')
+    slug = models.SlugField(max_length=100, unique=True, verbose_name='آدرس دسته بندی')
+    status = models.BooleanField(default=True, verbose_name='آیا نمایش داده شود؟')
     position = models.IntegerField(verbose_name='پوزیشن', default=1)
 
     class Meta:
         verbose_name = 'دسته بندی'
-        verbose_name_plural ='دسته بندی ها'
-        ordering = ['parent__id','position']
+        verbose_name_plural = 'دسته بندی ها'
+        ordering = ['parent__id', 'position']
 
     def __str__(self):
         return self.title
@@ -29,40 +29,44 @@ class Category(models.Model):
     objects = CategoryManager()
 
 
-class Article(models.Model):
+class IPAddress(models.Model):
+    ip_address = models.GenericIPAddressField(verbose_name='IP Address')
 
-    STATUS_CHOICES  =(
-        ('d', 'پیش نویس'),        # draft
-        ('p', 'منتشر شده'),       # publish
-        ('i', 'در حال بررسی'),    # investigation
-        ('b', 'برگشت داده شده '), # back
+
+class Article(models.Model):
+    STATUS_CHOICES = (
+        ('d', 'پیش نویس'),  # draft
+        ('p', 'منتشر شده'),  # publish
+        ('i', 'در حال بررسی'),  # investigation
+        ('b', 'برگشت داده شده '),  # back
     )
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name='articles',
                                verbose_name='نویسنده')
-    title = models.CharField(max_length=200 , verbose_name= 'عنوان')
-    slug = models.SlugField(max_length=100 , unique=True, verbose_name= 'آدرس مقاله')
-    category = models.ManyToManyField(Category ,verbose_name= 'دسته بندی', related_name='articles')
-    description = models.TextField( verbose_name= 'محتوا')
-    thumbnail = models.ImageField(upload_to= 'images', verbose_name= 'تصور مقاله')
-    publish = models.DateTimeField(default= timezone.now, verbose_name= 'زمان انتشار')
-    created = models.DateTimeField(auto_now_add= True)
-    updated = models.DateTimeField(auto_now= True)
+    title = models.CharField(max_length=200, verbose_name='عنوان')
+    slug = models.SlugField(max_length=100, unique=True, verbose_name='آدرس مقاله')
+    category = models.ManyToManyField(Category, verbose_name='دسته بندی', related_name='articles')
+    description = models.TextField(verbose_name='محتوا')
+    thumbnail = models.ImageField(upload_to='images', verbose_name='تصور مقاله')
+    publish = models.DateTimeField(default=timezone.now, verbose_name='زمان انتشار')
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     is_special = models.BooleanField(default=False, verbose_name='مقاله ویژه')
-    status  = models.CharField(max_length= 2 , choices= STATUS_CHOICES , verbose_name='وضعیت انتشار')
+    status = models.CharField(max_length=2, choices=STATUS_CHOICES, verbose_name='وضعیت انتشار')
     comments = GenericRelation(Comment)
-
+    hits = models.ManyToManyField(IPAddress, through='ArticleHit',blank=True, related_name='hits', verbose_name='views')
 
     class Meta:
-        verbose_name ='مقاله'
-        verbose_name_plural ='مقالات'
-        ordering =['-publish']
+        verbose_name = 'مقاله'
+        verbose_name_plural = 'مقالات'
+        ordering = ['-publish']
 
     def get_absolute_url(self):
         return reverse('account:home')
 
     def jpublish(self):
         return jalali_converter(self.publish)
-    jpublish.short_descriptions ='زمان انتشار'
+
+    jpublish.short_descriptions = 'زمان انتشار'
 
     # def category_published(self):
     #     return self.category.filter(status=True)
@@ -73,8 +77,10 @@ class Article(models.Model):
     category_to_str.short_description = 'دست بندی'
 
     def thumbnail_tag(self):
-        return format_html("<img width=100 height=75 style='border-radius : 5px;' src ='{}'> ".format(self.thumbnail.url))
-    thumbnail_tag.short_description ='تصویر مقاله'
+        return format_html(
+            "<img width=100 height=75 style='border-radius : 5px;' src ='{}'> ".format(self.thumbnail.url))
+
+    thumbnail_tag.short_description = 'تصویر مقاله'
 
     def __str__(self):
         return self.title
@@ -82,3 +88,7 @@ class Article(models.Model):
     objects = ArticleManager()
 
 
+class ArticleHit(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    ip_address = models.ForeignKey(IPAddress, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)

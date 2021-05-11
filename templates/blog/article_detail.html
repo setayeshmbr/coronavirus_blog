@@ -1,6 +1,7 @@
 {% extends 'blog/base.html' %}
 {% load static %}
 {% load comment_tags %}
+{% load ratings %}
 {% block main %}
     <!-- about -->
     <div class="about">
@@ -11,20 +12,27 @@
                         <figure><img src="{{ article.thumbnail.url }}" alt="#"/></figure>
                     </div>
                 </div>
+                {% ratings article %}
                 {% if object.is_special %}
                     {% if user.is_authenticated and user.is_special_user or user == object.auther or user.is_superuser %}
                         <div class="col-md-12">
                             <div class="titlepage text_align_left text-justify">
-                                <h2>{{ article.title }} </h2>
+                                <h2>{{ article.title }}  </h2>
                                 <p>{{ article.description |safe }}</p>
-                                <p class="post-meta">نوشته شده توسط <a
-                                        href="{% url 'blog:author' article.author.username %}">
-                                    {% if article.author.get_full_name %}
-                                        {{ article.author.get_full_name }}
-                                    {% else %}
-                                        {{ article.author.username }}
-                                    {% endif %}
-                                </a> {{ article.jpublish }} </p>
+                                <p class="post-meta"> نوشته شده توسط
+                                    <a href="{% url 'blog:author' article.author.username %}">
+                                        {% if article.author.get_full_name %}
+                                            {{ article.author.get_full_name }}
+                                        {% else %}
+                                            {{ article.author.username }}
+                                        {% endif %}
+                                    </a>
+                                    <br>
+                                    {{ article.jpublish }}
+                                    <br>
+                                    بازدید ها :{{ article.hits.count }}
+                                </p>
+
                                 {#                                <a class="read_more" href="about.html">ادامه</a>#}
                             </div>
                         </div>
@@ -57,7 +65,10 @@
                                     {{ article.author.username }}
                                 {% endif %}
                                 <br>
-                            </a> {{ article.jpublish }} </p>
+                            </a> {{ article.jpublish }}
+                                <br>
+                                بازدید ها :{{ article.hits.count }}
+                            </p>
                         </div>
                     </div>
 
